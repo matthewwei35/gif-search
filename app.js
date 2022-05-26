@@ -7,6 +7,7 @@ const express = require('express');
 
 // App Setup
 const app = express();
+app.use(express.static('public'));
 
 // Middleware
 const { engine } = require('express-handlebars');
