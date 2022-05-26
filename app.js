@@ -1,3 +1,7 @@
+const fetch = require('node-fetch');
+
+require('dotenv').config();
+
 // Require Libraries
 const express = require('express');
 
@@ -12,9 +16,22 @@ app.set('view engine', 'handlebars');
 app.set("views", "./views");
 
 // Routes
-app.get('/', (req, res) => {
-  res.render('home');
-});
+app.get('/',
+  (req, res) => {
+    let term = "";
+    if (req.query.term) {
+      term = req.query.term
+    }
+    fetch(`https://g.tenor.com/v1/search?q=${term}&key=${process.env.API_KEY}&limit=10`)
+    .then(response => response.json())
+    .then(
+      (data) => {
+        const gifs = data.results;
+        res.render('home', { gifs });
+      }
+    );
+  }
+);
 
 // Start Server
 
